@@ -28,7 +28,7 @@ async function run() {
     const userCollection = database.collection('users');
 
     // user post
-    app.post('/userInfo', async (req, res) => {
+    app.post('/usersInfo', async (req, res) => {
       const info = req.body;
       const result = await userCollection.insertOne(info);
       res.send(result);
