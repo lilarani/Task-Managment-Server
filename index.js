@@ -45,7 +45,7 @@ async function run() {
 
     // 🔹 **Socket.io: Handle Real-Time Connections**
     io.on('connection', socket => {
-      console.log('⚡ A user connected');
+      console.log(' A user connected');
 
       // Emit welcome message
       socket.emit('welcome', 'Welcome to the task manager!');
