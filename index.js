@@ -39,7 +39,9 @@ async function run() {
     await client.connect();
     console.log(' Connected to MongoDB');
 
-    const taskCollection = client.db('taskManagerDB').collection('tasks');
+    const database = client.db('TaskFlow');
+    const taskCollection = database.collection('tasks');
+    const usersCollection = database.collection('users');
 
     // 🔹 **Socket.io: Handle Real-Time Connections**
     io.on('connection', socket => {
@@ -52,6 +54,12 @@ async function run() {
       socket.on('disconnect', () => {
         console.log(' User disconnected');
       });
+    });
+
+    app.post('/usersInfo', async (req, res) => {
+      const users = req.body;
+      const result = await usersCollection.insertOne(users);
+      res.send(result);
     });
 
     app.get('/task', async (req, res) => {
@@ -202,10 +210,10 @@ run().catch(console.dir);
 
 // Basic route
 app.get('/', (req, res) => {
-  res.send('✅ Taskly server is running..');
+  res.send(' taskFlow server is running..');
 });
 
 // Start server
 server.listen(port, () => {
-  console.log(`🚀 Taskly is running on port ${port}`);
+  console.log(`taskFlow running on port ${port}`);
 });
