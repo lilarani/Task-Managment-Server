@@ -58,8 +58,22 @@ async function run() {
 
     app.post('/usersInfo', async (req, res) => {
       const users = req.body;
-      const result = await usersCollection.insertOne(users);
-      res.send(result);
+      let userEmail = users.email;
+      let q = { email: userEmail };
+
+      try {
+        let findUser = await usersCollection.findOne(q);
+
+        if (findUser) {
+          res.send('User already registered');
+        } else {
+          const result = await usersCollection.insertOne(users);
+          res.send(result);
+        }
+      } catch (err) {
+        console.log('Error:', err.message);
+        res.status(500).send('Internal Server Error');
+      }
     });
 
     app.get('/task', async (req, res) => {
